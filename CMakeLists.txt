@@ -9,6 +9,8 @@ add_executable(sort src/main.cpp)
 target_include_directories(sort
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/app
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/domain
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/infrastructure/cpu
 )
 
 find_package(OpenCL REQUIRED)

@@ -9,12 +9,17 @@
 
 #include "parse_input.hpp"
 #include "print_output.hpp"
+#include "sorter_factory.hpp"
 
 using elem_t = int;
 
 int main() {
     try {
         std::vector<elem_t> data = ReadInput<elem_t>(std::cin);
+
+        auto sorter = MakeSorter<elem_t>(Backend::CPU);
+        sorter->sort(data);
+
         PrintVector(std::cout, data);
     } catch (std::exception& e) {
         std::cerr << e.what() << "\n";
