@@ -12,13 +12,13 @@
 #include "print_output.hpp"
 #include "sorter_factory.hpp"
 
-using TElem = int;
+using Elem = int;
 
 int main() {
     try {
-        std::vector<TElem> data = bitonic_sort::app::ReadInput<TElem>(std::cin);
+        std::vector<Elem> data = bitonic_sort::app::ReadInput<Elem>(std::cin);
 
-        auto sorter = bitonic_sort::app::MakeSorter<TElem>(bitonic_sort::app::Backend::kCpu);
+        auto sorter = bitonic_sort::app::MakeSorter<Elem>(bitonic_sort::app::Backend::kCpu);
         sorter->sort(data);
 
         bitonic_sort::app::PrintVector(std::cout, data);
