@@ -22,7 +22,7 @@ int main() {
         sorter->sort(data);
 
         bitonic_sort::app::PrintVector(std::cout, data);
-    } catch (std::exception& e) {
+    } catch (const std::exception& e) {
         std::cerr << e.what() << "\n";
         return 1;
     }
