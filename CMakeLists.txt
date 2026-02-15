@@ -10,7 +10,7 @@ target_include_directories(sort
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/app
         ${CMAKE_CURRENT_SOURCE_DIR}/src/domain
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/infrastructure/cpu
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/infra/cpu
 )
 
 find_package(OpenCL REQUIRED)
