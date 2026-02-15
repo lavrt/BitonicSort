@@ -7,10 +7,9 @@ namespace bitonic_sort::app {
 
 template <typename T>
 void PrintVector(std::ostream& out, const std::vector<T>& vec) {
-    for (const auto& value : vec) {
-        out << value << " ";
+    for (size_t i = 0; i != vec.size(); ++i) {
+        out << vec[i] << (i + 1 == vec.size() ? "\n" : " ");
     }
-    out << "\n";
 }
 
 } // namespace bitonic_sort::app
