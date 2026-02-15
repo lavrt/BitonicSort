@@ -5,6 +5,7 @@
 #include <CL/opencl.hpp>
 
 #include <iostream>
+#include <memory>
 #include <vector>
 
 #include "parse_input.hpp"
