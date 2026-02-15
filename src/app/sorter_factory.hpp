@@ -5,17 +5,21 @@
 #include "sorter.hpp"
 #include "std_sorter.hpp"
 
+namespace bitonic_sort::app {
+
 enum class Backend {
-    CPU,
-    OpenCL
+    kCpu = 0,
+    kOpenCl = 1,
 };
 
 template <typename T>
-inline std::unique_ptr<ISorter<T>> MakeSorter(Backend b) {
+std::unique_ptr<domain::ISorter<T>> MakeSorter(Backend b) {
     switch (b) {
-        case Backend::CPU: {
-            return std::make_unique<StdSorter<T>>();
-        }
+        case Backend::kCpu:
+            return std::make_unique<infra::cpu::StdSorter<T>>();
+        default:
+            throw std::runtime_error("Unknown backend");
     }
-    throw std::runtime_error("Unknown backend");
 }
+
+} // namespace bitonic_sort::app

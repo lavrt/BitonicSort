@@ -12,16 +12,16 @@
 #include "print_output.hpp"
 #include "sorter_factory.hpp"
 
-using elem_t = int;
+using TElem = int;
 
 int main() {
     try {
-        std::vector<elem_t> data = ReadInput<elem_t>(std::cin);
+        std::vector<TElem> data = bitonic_sort::app::ReadInput<TElem>(std::cin);
 
-        auto sorter = MakeSorter<elem_t>(Backend::CPU);
+        auto sorter = bitonic_sort::app::MakeSorter<TElem>(bitonic_sort::app::Backend::kCpu);
         sorter->sort(data);
 
-        PrintVector(std::cout, data);
+        bitonic_sort::app::PrintVector(std::cout, data);
     } catch (std::exception& e) {
         std::cerr << e.what() << "\n";
         return 1;

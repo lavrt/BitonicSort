@@ -1,11 +1,13 @@
 #pragma once
 
+#include <format>
 #include <istream>
 #include <vector>
-#include <format>
+
+namespace bitonic_sort::app {
 
 template <typename T>
-inline std::vector<T> ReadInput(std::istream& in) {
+std::vector<T> ReadInput(std::istream& in) {
     size_t n = 0;
     if (!(in >> n)) {
         throw std::runtime_error("Input error: expected number of elements");
@@ -24,3 +26,5 @@ inline std::vector<T> ReadInput(std::istream& in) {
 
     return data;
 }
+
+} // namespace bitonic_sort::app

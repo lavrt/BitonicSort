@@ -3,10 +3,14 @@
 #include <ostream>
 #include <vector>
 
+namespace bitonic_sort::app {
+
 template <typename T>
-inline void PrintVector(std::ostream& out, const std::vector<T>& vec) {
+void PrintVector(std::ostream& out, const std::vector<T>& vec) {
     for (const auto& value : vec) {
         out << value << " ";
     }
     out << "\n";
 }
+
+} // namespace bitonic_sort::app
