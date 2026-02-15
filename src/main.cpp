@@ -6,7 +6,6 @@
 
 #include <iostream>
 #include <vector>
-#include <string>
 
 #include "parse_input.hpp"
 #include "print_output.hpp"
