@@ -11,7 +11,7 @@ namespace bitonic_sort::infra::cpu {
 template <typename T>
 class StdSorter final : public domain::ISorter<T> {
 public:
-    void sort(std::span<T> data, domain::SortOptions opt) override {
+    void Sort(std::span<T> data, domain::SortOptions opt) override {
         if (opt.ascending) {
             std::sort(data.begin(), data.end(), std::less<T>{});
         } else {
@@ -19,7 +19,7 @@ public:
         }
     }
 
-    std::string name() const override {
+    std::string Name() const override {
         return "std::sort";
     }
 };

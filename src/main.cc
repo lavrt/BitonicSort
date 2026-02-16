@@ -19,7 +19,7 @@ int main() {
         std::vector<Elem> data = bitonic_sort::app::ReadInput<Elem>(std::cin);
 
         auto sorter = bitonic_sort::app::MakeSorter<Elem>(bitonic_sort::app::Backend::kCpu);
-        sorter->sort(data);
+        sorter->Sort(data);
 
         bitonic_sort::app::PrintVector(std::cout, data);
     } catch (const std::exception& e) {
