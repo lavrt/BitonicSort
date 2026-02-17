@@ -21,6 +21,18 @@ public:
         queue_ = cl::CommandQueue(context_, device_);
     }
 
+    const cl::Device& GetDevice() const noexcept {
+        return device_;
+    }
+
+    const cl::Context& GetContext() const noexcept {
+        return context_;
+    }
+
+    cl::CommandQueue& GetQueue() noexcept {
+        return queue_;
+    }
+
 private:
     cl::Platform platform_;
     cl::Device device_;
