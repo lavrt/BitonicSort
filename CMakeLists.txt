@@ -11,6 +11,7 @@ target_include_directories(sort
         ${CMAKE_CURRENT_SOURCE_DIR}/src/app
         ${CMAKE_CURRENT_SOURCE_DIR}/src/domain
         ${CMAKE_CURRENT_SOURCE_DIR}/src/infra/cpu
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/infra/opencl
 )
 
 find_package(OpenCL REQUIRED)
