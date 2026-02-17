@@ -2,6 +2,7 @@
 
 #include <format>
 #include <istream>
+#include <stdexcept>
 #include <vector>
 
 namespace bitonic_sort::app {

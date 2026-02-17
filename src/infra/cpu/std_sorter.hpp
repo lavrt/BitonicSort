@@ -1,7 +1,7 @@
 #pragma once
 
-#include <algorithm>
 #include <span>
+#include <string>
 
 #include "sorter.hpp"
 #include "sort_options.hpp"
