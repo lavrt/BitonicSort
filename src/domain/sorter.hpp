@@ -1,6 +1,7 @@
 #pragma once
 
 #include <span>
+#include <string>
 
 #include "sort_options.hpp"
 
