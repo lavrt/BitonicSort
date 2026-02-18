@@ -3,16 +3,10 @@
 #include <stdexcept>
 #include <vector>
 
+#include "device_kind.hpp"
 #include "opencl_config.hpp"
 
 namespace bitonic_sort::infra::opencl {
-
-enum class DeviceKind {
-    kPreferGpu,
-    kPreferCpu,
-    kCpuOnly,
-    kGpuOnly,
-};
 
 class OpenClRuntime {
 public:
