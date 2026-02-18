@@ -1,5 +1,7 @@
 #include "parse_cli.hpp"
 
+#include <filesystem>
+#include <sstream>
 #include <stdexcept>
 
 #include <boost/program_options.hpp>
@@ -20,46 +22,52 @@ infra::opencl::DeviceKind ParseDeviceKind(const std::string& dev) {
 ParseResult ParseCli(int argc, char** argv) {
     po::options_description desc("Options");
     desc.add_options()
-        ("help,h", "show help")
-        ("desc", po::bool_switch(), "sort in descending order")
-        ("backend,b", po::value<std::string>()->default_value("opencl"), "cpu|opencl")
-        ("device,d", po::value<std::string>()->default_value("gpu"), "cpu|gpu|prefer-cpu|prefer-gpu")
-        ("kernel,k", po::value<std::string>()->default_value("kernels/bitonic.cl"), "path to kernel.cl");
+        (
+            "help,h",
+            "show this help and exit"
+        )
+        (
+            "desc",
+            po::bool_switch(),
+            "sort in descending order"
+        )
+        (
+            "backend,b",
+            po::value<std::string>()->default_value("opencl"),
+            "backend to use: cpu|opencl"
+        )
+        (
+            "device,d",
+            po::value<std::string>()->default_value("gpu"),
+            "(OpenCL only) OpenCL device selection: cpu|gpu|prefer-cpu|prefer-gpu"
+        )
+        (
+            "kernel,k", po::value<std::string>()->default_value("kernels/bitonic.cl"),
+            "(OpenCL only) path to OpenCL kernel source, if path is relative it is resolved"
+            "relative to the executable directory <exe_dir> (<exe_dir> is the directory containing"
+            "the 'sort' executable)"
+        );
     
     po::variables_map vm;
     po::store(po::parse_command_line(argc, argv, desc), vm);
     po::notify(vm);
 
+    std::ostringstream oss;
+    oss << "Usage:\n"
+        << "  sort [options] < input\n"
+        << "\n"
+        << desc
+        << "\n"
+        << "Input:\n"
+        << "  N followed by N elements\n"
+        << "\n"
+        << "Output:\n"
+        << "  N elements sorted, separated by spaces\n";
+
     if (vm.count("help")) {
         return ExitAction{
-            .code = 0, .text =
-            "Usage:\n"
-            "  sort [--backend cpu|opencl] [--device gpu|cpu|prefer-gpu|prefer-cpu] [--kernel PATH]\n"
-            "  sort --help\n"
-            "\n"
-            "Options:\n"
-            "  -h, --help \t\t show this help and exit\n"
-            "      --desc \t\t sort in descending order,\n"
-            "             \t\t default is ascending\n"
-            "  -b, --backend=ARG \t backend to use: cpu|opencl,\n"
-            "                    \t default is opencl\n"
-            "  -d, --device=ARG \t OpenCL device selection:\n"
-            "                   \t cpu|gpu|prefer-gpu|prefer-cpu,\n"
-            "                   \t default is gpu\n"
-            "  -k, --kernel=PATH \t path to OpenCL kernel source,\n"
-            "                    \t default is kernels/bitonic.cl\n"
-            "                    \t (provided next to the executable),\n"
-            "                    \t if PATH is relative it is resolved\n"
-            "                    \t relative to the executable directory\n"
-            "                    \t (<exe_dir>)\n"
-            "\n"
-            "Input:\n"
-            "  Reads from stdin:\n"
-            "    N\n"
-            "    a0 a1 ... a(N-1)\n"
-            "\n"
-            "Output:\n"
-            "  Prints sorted sequence to stdout\n"
+            .code = 0,
+            .text = oss.str()
         };
     }
 
@@ -68,13 +76,13 @@ ParseResult ParseCli(int argc, char** argv) {
 
     if (backend == "cpu") {
         return CpuConfig{
-            .opt{.ascending = descending ? false : true}
+            .opt{.ascending = !descending}
         };
     }
     
     if (backend == "opencl") {
         return OpenClConfig{
-            .opt{.ascending = descending ? false : true},
+            .opt{.ascending = !descending},
             .kind = ParseDeviceKind(vm["device"].as<std::string>()),
             .kernel_path = vm["kernel"].as<std::string>()
         };
