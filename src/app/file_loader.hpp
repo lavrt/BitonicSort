@@ -10,7 +10,7 @@ namespace bitonic_sort::app {
 inline std::string LoadFile(const std::filesystem::path& path) {
     std::ifstream in(path, std::ios::binary);
     if (!in) {
-        throw std::runtime_error("Failed to load kernel file: " + path.string());
+        throw std::runtime_error("Failed to load file: " + path.string());
     }
 
     return std::string{
