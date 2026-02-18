@@ -11,8 +11,6 @@
 
 namespace bitonic_sort::app {
 
-using SorterConfig = std::variant<CpuConfig, OpenClConfig>;
-
 template <typename T>
 std::unique_ptr<domain::ISorter<T>> MakeSorter(const SorterConfig& cfg) {
     if (auto* mode = std::get_if<CpuConfig>(&cfg)) {

@@ -1,13 +1,11 @@
-#pragma once
-
+#include <stdexcept>
 #include <variant>
 
-#include "parse_cli.hpp"
-#include "sorter_factory.hpp"
+#include "sorting_configs.hpp"
 
 namespace bitonic_sort::app {
 
-inline SorterConfig ToSorterConfig(ParseResult&& res) {
+SorterConfig ToSorterConfig(ParseResult&& res) {
     if (auto* cpu = std::get_if<CpuConfig>(&res)) {
         return *cpu;
     }

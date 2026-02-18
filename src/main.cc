@@ -8,7 +8,6 @@
 #include "parse_input.hpp"
 #include "print_output.hpp"
 #include "sorter_factory.hpp"
-#include "utils.hpp"
 
 using Elem = int;
 
