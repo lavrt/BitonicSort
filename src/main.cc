@@ -5,31 +5,32 @@
 #include <vector>
 
 #include "kernel_loader.hpp"
+#include "parse_cli.hpp"
 #include "parse_input.hpp"
 #include "print_output.hpp"
 #include "sorter_factory.hpp"
+#include "utils.hpp"
 
 using Elem = int;
 
+namespace App = bitonic_sort::app;
+
 int main(int argc, char** argv) {
     try {
-        std::vector<Elem> data = bitonic_sort::app::ReadInput<Elem>(std::cin);
-
-        // auto sorter = bitonic_sort::app::MakeSorter<Elem>(bitonic_sort::app::Backend::kCpu);
-        // sorter->Sort(data);
-
-        auto kernel_path = bitonic_sort::app::GetExeDir() / "kernels" / "bitonic.cl";
-
-        auto sorter = bitonic_sort::app::MakeSorter<Elem>(
-            bitonic_sort::app::OpenClTag{
-                .kind = bitonic_sort::infra::opencl::DeviceKind::kGpuOnly,
-                .kernel_src = bitonic_sort::app::LoadKernelFile(kernel_path)
+        auto parsed = App::ParseCli(argc, argv);
+        if (auto* act = std::get_if<App::ExitAction>(&parsed)) {
+            if (!act->text.empty()) {
+                std::cout << act->text << "\n";
             }
-        );
+            return act->code;
+        }
 
+        std::vector<Elem> data = App::ReadInput<Elem>(std::cin);
+
+        auto sorter = App::MakeSorter<Elem>(App::ToSorterConfig(std::move(parsed)));
         sorter->Sort(data);
 
-        bitonic_sort::app::PrintVector(std::cout, data);
+        App::PrintVector(std::cout, data);
     } catch (const std::exception& e) {
         std::cerr << e.what() << "\n";
         return 1;

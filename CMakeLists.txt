@@ -22,3 +22,6 @@ add_custom_command(TARGET sort POST_BUILD
 
 find_package(OpenCL REQUIRED)
 target_link_libraries(sort PRIVATE OpenCL::OpenCL)
+
+find_package(Boost REQUIRED COMPONENTS program_options)
+target_link_libraries(sort PRIVATE Boost::program_options)
