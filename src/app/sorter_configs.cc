@@ -5,7 +5,7 @@
 
 namespace bitonic_sort::app {
 
-SorterConfig ToSorterConfig(ParseResult&& res) {
+SorterConfig ToSorterConfig(const ParseResult& res) {
     if (auto* cpu = std::get_if<CpuConfig>(&res)) {
         return *cpu;
     }
