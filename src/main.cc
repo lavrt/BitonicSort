@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "kernel_loader.hpp"
 #include "parse_cli.hpp"
 #include "parse_input.hpp"
 #include "print_output.hpp"
