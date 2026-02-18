@@ -18,17 +18,13 @@ int main(int argc, char** argv) {
     try {
         auto parsed = App::ParseCli(argc, argv);
         if (auto* act = std::get_if<App::ExitAction>(&parsed)) {
-            if (!act->text.empty()) {
-                std::cout << act->text;
-            }
+            std::cout << act->text;
             return act->code;
         }
 
-        std::vector<Elem> data = App::ReadInput<Elem>(std::cin);
-
         auto sorter = App::MakeSorter<Elem>(App::ToSorterConfig(std::move(parsed)));
+        std::vector<Elem> data = App::ReadInput<Elem>(std::cin);
         sorter->Sort(data);
-
         App::PrintVector(std::cout, data);
     } catch (const std::exception& e) {
         std::cerr << e.what() << "\n";

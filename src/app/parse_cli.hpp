@@ -67,7 +67,7 @@ inline ParseResult ParseCli(int argc, char** argv) {
             "                    \t if PATH is relative it is resolved\n"
             "                    \t relative to the executable directory\n"
             "                    \t (<exe_dir>)\n"
-        }; // TODO
+        };
     }
 
     const std::string backend = vm["backend"].as<std::string>();
