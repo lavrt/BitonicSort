@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(sort
     src/main.cc
     src/app/parse_cli.cc
-    src/app/sorting_configs.cc
+    src/app/sorter_configs.cc
 )
 
 target_include_directories(sort

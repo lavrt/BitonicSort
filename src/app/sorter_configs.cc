@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <variant>
 
-#include "sorting_configs.hpp"
+#include "sorter_configs.hpp"
 
 namespace bitonic_sort::app {
 

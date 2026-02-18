@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <string>
 
-#include "sorting_configs.hpp"
+#include "sorter_configs.hpp"
 #include "device_kind.hpp"
 
 namespace bitonic_sort::app {
