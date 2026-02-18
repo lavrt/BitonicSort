@@ -9,6 +9,7 @@
 #include "parse_input.hpp"
 #include "print_output.hpp"
 #include "sorter_factory.hpp"
+#include "sort_options.hpp"
 
 using Elem = int;
 
@@ -22,9 +23,14 @@ int main(int argc, char** argv) {
             return act->code;
         }
 
-        auto sorter = App::MakeSorter<Elem>(App::ToSorterConfig(std::move(parsed)));
+        auto cfg = App::ToSorterConfig(parsed);
+        const auto& opt = std::visit([](const auto& c) {
+            return c.opt;
+        }, cfg);
+
+        auto sorter = App::MakeSorter<Elem>(cfg);
         std::vector<Elem> data = App::ReadInput<Elem>(std::cin);
-        sorter->Sort(data);
+        sorter->Sort(data, opt);
         App::PrintVector(std::cout, data);
     } catch (const std::exception& e) {
         std::cerr << e.what() << "\n";

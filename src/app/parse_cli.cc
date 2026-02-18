@@ -20,10 +20,11 @@ infra::opencl::DeviceKind ParseDeviceKind(const std::string& dev) {
 ParseResult ParseCli(int argc, char** argv) {
     po::options_description desc("Options");
     desc.add_options()
-        ("help,h", "Show help")
+        ("help,h", "show help")
+        ("desc", po::bool_switch(), "sort in descending order")
         ("backend,b", po::value<std::string>()->default_value("opencl"), "cpu|opencl")
         ("device,d", po::value<std::string>()->default_value("gpu"), "cpu|gpu|prefer-cpu|prefer-gpu")
-        ("kernel,k", po::value<std::string>()->default_value("kernels/bitonic.cl"), "Path to kernel.cl");
+        ("kernel,k", po::value<std::string>()->default_value("kernels/bitonic.cl"), "path to kernel.cl");
     
     po::variables_map vm;
     po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -34,9 +35,12 @@ ParseResult ParseCli(int argc, char** argv) {
             .code = 0, .text =
             "Usage:\n"
             "  sort [--backend cpu|opencl] [--device gpu|cpu|prefer-gpu|prefer-cpu] [--kernel PATH]\n"
-            "  sort --help\n\n"
+            "  sort --help\n"
+            "\n"
             "Options:\n"
             "  -h, --help \t\t show this help and exit\n"
+            "      --desc \t\t sort in descending order,\n"
+            "             \t\t default is ascending\n"
             "  -b, --backend=ARG \t backend to use: cpu|opencl,\n"
             "                    \t default is opencl\n"
             "  -d, --device=ARG \t OpenCL device selection:\n"
@@ -48,17 +52,29 @@ ParseResult ParseCli(int argc, char** argv) {
             "                    \t if PATH is relative it is resolved\n"
             "                    \t relative to the executable directory\n"
             "                    \t (<exe_dir>)\n"
+            "\n"
+            "Input:\n"
+            "  Reads from stdin:\n"
+            "    N\n"
+            "    a0 a1 ... a(N-1)\n"
+            "\n"
+            "Output:\n"
+            "  Prints sorted sequence to stdout\n"
         };
     }
 
     const std::string backend = vm["backend"].as<std::string>();
+    const bool descending = vm["desc"].as<bool>();
 
     if (backend == "cpu") {
-        return CpuConfig{};
+        return CpuConfig{
+            .opt{.ascending = descending ? false : true}
+        };
     }
     
     if (backend == "opencl") {
         return OpenClConfig{
+            .opt{.ascending = descending ? false : true},
             .kind = ParseDeviceKind(vm["device"].as<std::string>()),
             .kernel_path = vm["kernel"].as<std::string>()
         };
