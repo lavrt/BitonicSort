@@ -11,17 +11,19 @@
 
 using Elem = int;
 
-int main() {
+int main(int argc, char** argv) {
     try {
         std::vector<Elem> data = bitonic_sort::app::ReadInput<Elem>(std::cin);
 
         // auto sorter = bitonic_sort::app::MakeSorter<Elem>(bitonic_sort::app::Backend::kCpu);
         // sorter->Sort(data);
 
+        auto kernel_path = bitonic_sort::app::GetExeDir() / "kernels" / "bitonic.cl";
+
         auto sorter = bitonic_sort::app::MakeSorter<Elem>(
             bitonic_sort::app::OpenClTag{
                 .kind = bitonic_sort::infra::opencl::DeviceKind::kGpuOnly,
-                .kernel_src = bitonic_sort::app::LoadKernelFile("src/infra/opencl/kernels/bitonic.cl")
+                .kernel_src = bitonic_sort::app::LoadKernelFile(kernel_path)
             }
         );
 

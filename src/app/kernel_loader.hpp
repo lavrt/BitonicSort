@@ -19,4 +19,8 @@ inline std::string LoadKernelFile(const std::filesystem::path& path) {
     };
 }
 
+inline std::filesystem::path GetExeDir() {
+    return std::filesystem::read_symlink("/proc/self/exe").parent_path();
+}
+
 } // namespace bitonic_sort::app

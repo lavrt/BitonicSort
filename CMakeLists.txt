@@ -14,5 +14,11 @@ target_include_directories(sort
         ${CMAKE_CURRENT_SOURCE_DIR}/src/infra/opencl
 )
 
+add_custom_command(TARGET sort POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/src/infra/opencl/kernels
+            $<TARGET_FILE_DIR:sort>/kernels
+)
+
 find_package(OpenCL REQUIRED)
 target_link_libraries(sort PRIVATE OpenCL::OpenCL)
