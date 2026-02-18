@@ -4,7 +4,10 @@ project(bitonic_sort LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(sort src/main.cc)
+add_executable(sort
+    src/main.cc
+    src/app/parse_cli.cc
+)
 
 target_include_directories(sort
     PUBLIC
