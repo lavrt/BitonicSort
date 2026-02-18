@@ -40,16 +40,34 @@ inline ParseResult ParseCli(int argc, char** argv) {
     po::options_description desc("Options");
     desc.add_options()
         ("help,h", "Show help")
-        ("backend", po::value<std::string>()->default_value("opencl"), "cpu|opencl")
-        ("device", po::value<std::string>()->default_value("gpu"), "cpu|gpu|prefer-cpu|prefer-gpu")
-        ("kernel", po::value<std::string>()->default_value("kernels/bitonic.cl"), "Path to kernel.cl");
+        ("backend,b", po::value<std::string>()->default_value("opencl"), "cpu|opencl")
+        ("device,d", po::value<std::string>()->default_value("gpu"), "cpu|gpu|prefer-cpu|prefer-gpu")
+        ("kernel,k", po::value<std::string>()->default_value("kernels/bitonic.cl"), "Path to kernel.cl");
     
     po::variables_map vm;
     po::store(po::parse_command_line(argc, argv, desc), vm);
     po::notify(vm);
 
     if (vm.count("help")) {
-        return ExitAction{0, "Usage: sort [options]\n"}; // TODO
+        return ExitAction{
+            .code = 0, .text =
+            "Usage:\n"
+            "  sort [--backend cpu|opencl] [--device gpu|cpu|prefer-gpu|prefer-cpu] [--kernel PATH]\n"
+            "  sort --help\n\n"
+            "Options:\n"
+            "  -h, --help \t\t show this help and exit\n"
+            "  -b, --backend=ARG \t backend to use: cpu|opencl,\n"
+            "                    \t default is opencl\n"
+            "  -d, --device=ARG \t OpenCL device selection:\n"
+            "                   \t cpu|gpu|prefer-gpu|prefer-cpu,\n"
+            "                   \t default is gpu\n"
+            "  -k, --kernel=PATH \t path to OpenCL kernel source,\n"
+            "                    \t default is kernels/bitonic.cl\n"
+            "                    \t (provided next to the executable),\n"
+            "                    \t if PATH is relative it is resolved\n"
+            "                    \t relative to the executable directory\n"
+            "                    \t (<exe_dir>)\n"
+        }; // TODO
     }
 
     const std::string backend = vm["backend"].as<std::string>();

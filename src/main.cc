@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
         auto parsed = App::ParseCli(argc, argv);
         if (auto* act = std::get_if<App::ExitAction>(&parsed)) {
             if (!act->text.empty()) {
-                std::cout << act->text << "\n";
+                std::cout << act->text;
             }
             return act->code;
         }
