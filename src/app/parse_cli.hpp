@@ -4,7 +4,6 @@
 #include <string>
 
 #include "sorter_configs.hpp"
-#include "device_kind.hpp"
 
 namespace bitonic_sort::app {
 
@@ -23,7 +22,6 @@ struct CliResult {
     ExitAction exit_action;
 };
 
-infra::opencl::DeviceKind ParseDeviceKind(const std::string& dev);
 std::pair<CliResult, std::optional<SorterConfig>> ParseCli(int argc, const char** argv);
 
 } // namespace bitonic_sort::app

@@ -6,18 +6,22 @@
 
 #include <boost/program_options.hpp>
 
-namespace bitonic_sort::app {
-
 namespace po = boost::program_options;
 
-infra::opencl::DeviceKind ParseDeviceKind(const std::string& dev) {
-    using K = infra::opencl::DeviceKind;
+namespace {
+
+bitonic_sort::infra::opencl::DeviceKind ParseDeviceKind(const std::string& dev) {
+    using K = bitonic_sort::infra::opencl::DeviceKind;
     if (dev == "cpu") return K::kCpuOnly;
     if (dev == "gpu") return K::kGpuOnly;
     if (dev == "prefer-cpu") return K::kPreferCpu;
     if (dev == "prefer-gpu") return K::kPreferGpu;
     throw std::runtime_error("Unknown --device value: " + dev);
 }
+
+} // namespace
+
+namespace bitonic_sort::app {
 
 std::pair<CliResult, std::optional<SorterConfig>> ParseCli(int argc, const char** argv) {
     po::options_description desc("Options");
