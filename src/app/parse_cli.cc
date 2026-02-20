@@ -19,7 +19,7 @@ infra::opencl::DeviceKind ParseDeviceKind(const std::string& dev) {
     throw std::runtime_error("Unknown --device value: " + dev);
 }
 
-ParseResult ParseCli(int argc, char** argv) {
+std::pair<CliResult, std::optional<SorterConfig>> ParseCli(int argc, char** argv) {
     po::options_description desc("Options");
     desc.add_options()
         (
@@ -52,8 +52,9 @@ ParseResult ParseCli(int argc, char** argv) {
     po::store(po::parse_command_line(argc, argv, desc), vm);
     po::notify(vm);
 
-    std::ostringstream oss;
-    oss << "Usage:\n"
+    std::ostringstream help_text;
+    help_text
+        << "Usage:\n"
         << "  sort [options] < input\n"
         << "\n"
         << desc
@@ -65,9 +66,15 @@ ParseResult ParseCli(int argc, char** argv) {
         << "  N elements sorted, separated by spaces\n";
 
     if (vm.count("help")) {
-        return ExitAction{
-            .code = 0,
-            .text = oss.str()
+        return {
+            CliResult{
+                .mode = CliMode::kExit,
+                .exit_action = {
+                    .exit_code = 0,
+                    .exit_text = help_text.str()
+                }
+            },
+            std::nullopt
         };
     }
 
@@ -75,16 +82,22 @@ ParseResult ParseCli(int argc, char** argv) {
     const bool descending = vm["desc"].as<bool>();
 
     if (backend == "cpu") {
-        return CpuConfig{
-            .opt{.ascending = !descending}
+        return {
+            CliResult{},
+            CpuConfig{
+                .opt{.ascending = !descending}
+            }
         };
     }
     
     if (backend == "opencl") {
-        return OpenClConfig{
-            .opt{.ascending = !descending},
-            .kind = ParseDeviceKind(vm["device"].as<std::string>()),
-            .kernel_path = vm["kernel"].as<std::string>()
+        return {
+            CliResult{},
+            OpenClConfig{
+                .opt{.ascending = !descending},
+                .kind = ParseDeviceKind(vm["device"].as<std::string>()),
+                .kernel_path = vm["kernel"].as<std::string>()
+            }
         };
     }
 

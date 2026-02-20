@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#include <optional>
 #include <string>
 #include <variant>
 
@@ -9,9 +10,19 @@
 
 namespace bitonic_sort::app {
 
+enum class CliMode {
+    kRun,
+    kExit,
+};
+
 struct ExitAction {
-    int code;
-    std::string text;
+    int exit_code;
+    std::string exit_text;
+};
+
+struct CliResult {
+    CliMode mode = CliMode::kRun;
+    ExitAction exit_action;
 };
 
 struct CpuConfig {
@@ -24,9 +35,6 @@ struct OpenClConfig {
     std::filesystem::path kernel_path;
 };
 
-using ParseResult = std::variant<ExitAction, CpuConfig, OpenClConfig>;
 using SorterConfig = std::variant<CpuConfig, OpenClConfig>;
-
-SorterConfig ToSorterConfig(const ParseResult& res);
 
 } // namespace bitonic_sort::app

@@ -17,20 +17,20 @@ namespace App = bitonic_sort::app;
 
 int main(int argc, char** argv) {
     try {
-        auto parsed = App::ParseCli(argc, argv);
-        if (auto* act = std::get_if<App::ExitAction>(&parsed)) {
-            std::cout << act->text;
-            return act->code;
+        auto [program, cfg] = App::ParseCli(argc, argv);
+        if (program.mode == App::CliMode::kExit) {
+            std::cout << program.exit_action.exit_text;
+            return program.exit_action.exit_code;
         }
 
-        auto cfg = App::ToSorterConfig(parsed);
+        auto sorter = App::MakeSorter<Elem>(cfg.value());
+        std::vector<Elem> data = App::ReadInput<Elem>(std::cin);
+
         const auto& opt = std::visit([](const auto& c) {
             return c.opt;
-        }, cfg);
-
-        auto sorter = App::MakeSorter<Elem>(cfg);
-        std::vector<Elem> data = App::ReadInput<Elem>(std::cin);
+        }, cfg.value());
         sorter->Sort(data, opt);
+        
         App::PrintVector(std::cout, data);
     } catch (const std::exception& e) {
         std::cerr << e.what() << "\n";
