@@ -4,27 +4,39 @@ project(bitonic_sort LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(sort
-    src/main.cc
-    src/app/parse_cli.cc
+find_package(OpenCL REQUIRED)
+find_package(Boost REQUIRED COMPONENTS program_options)
+
+add_library(bitonic
+    STATIC
+        ${CMAKE_SOURCE_DIR}/src/app/parse_cli.cc
 )
 
-target_include_directories(sort
+target_include_directories(bitonic
     PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/app
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/domain
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/infra/cpu
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/infra/opencl
+        ${CMAKE_SOURCE_DIR}/src/app
+        ${CMAKE_SOURCE_DIR}/src/domain
+        ${CMAKE_SOURCE_DIR}/src/infra/cpu
+        ${CMAKE_SOURCE_DIR}/src/infra/opencl
 )
 
-add_custom_command(TARGET sort POST_BUILD
+target_link_libraries(bitonic
+    PRIVATE
+        OpenCL::OpenCL
+        Boost::program_options
+)
+
+add_executable(sort
+    ${CMAKE_SOURCE_DIR}/src/main.cc
+)
+
+target_link_libraries(sort
+    PRIVATE
+        bitonic
+)
+
+add_custom_target(copy_kernels ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CMAKE_SOURCE_DIR}/src/infra/opencl/kernels
             $<TARGET_FILE_DIR:sort>/kernels
 )
-
-find_package(OpenCL REQUIRED)
-target_link_libraries(sort PRIVATE OpenCL::OpenCL)
-
-find_package(Boost REQUIRED COMPONENTS program_options)
-target_link_libraries(sort PRIVATE Boost::program_options)
