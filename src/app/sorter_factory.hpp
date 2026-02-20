@@ -22,7 +22,7 @@ std::unique_ptr<domain::ISorter<T>> MakeSorter(const SorterConfig& cfg) {
             mode->kind
         );
     }
-    throw std::runtime_error("Unknown SorterConfig");
+    throw std::logic_error("Unknown SorterConfig");
 }
 
 } // namespace bitonic_sort::app
