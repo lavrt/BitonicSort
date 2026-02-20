@@ -6,8 +6,6 @@
 
 #include <boost/program_options.hpp>
 
-namespace po = boost::program_options;
-
 namespace {
 
 bitonic_sort::infra::opencl::DeviceKind ParseDeviceKind(const std::string& dev) {
@@ -24,6 +22,8 @@ bitonic_sort::infra::opencl::DeviceKind ParseDeviceKind(const std::string& dev) 
 namespace bitonic_sort::app {
 
 std::pair<CliResult, std::optional<SorterConfig>> ParseCli(int argc, const char** argv) {
+    namespace po = boost::program_options;
+    
     po::options_description desc("Options");
     desc.add_options()
         (

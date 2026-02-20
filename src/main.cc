@@ -13,25 +13,25 @@
 
 using Elem = int;
 
-namespace App = bitonic_sort::app;
+namespace app = bitonic_sort::app;
 
 int main(int argc, const char** argv) {
     try {
-        auto [program, cfg] = App::ParseCli(argc, argv);
-        if (program.mode == App::CliMode::kExit) {
+        auto [program, cfg] = app::ParseCli(argc, argv);
+        if (program.mode == app::CliMode::kExit) {
             std::cout << program.exit_action.exit_text;
             return program.exit_action.exit_code;
         }
 
-        auto sorter = App::MakeSorter<Elem>(cfg.value());
-        std::vector<Elem> data = App::ReadInput<Elem>(std::cin);
+        auto sorter = app::MakeSorter<Elem>(cfg.value());
+        std::vector<Elem> data = app::ReadInput<Elem>(std::cin);
 
         const auto& opt = std::visit([](const auto& c) {
             return c.opt;
         }, cfg.value());
         sorter->Sort(data, opt);
         
-        App::PrintVector(std::cout, data);
+        app::PrintVector(std::cout, data);
     } catch (const std::exception& e) {
         std::cerr << e.what() << "\n";
         return 1;
