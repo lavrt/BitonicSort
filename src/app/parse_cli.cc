@@ -19,7 +19,7 @@ infra::opencl::DeviceKind ParseDeviceKind(const std::string& dev) {
     throw std::runtime_error("Unknown --device value: " + dev);
 }
 
-std::pair<CliResult, std::optional<SorterConfig>> ParseCli(int argc, char** argv) {
+std::pair<CliResult, std::optional<SorterConfig>> ParseCli(int argc, const char** argv) {
     po::options_description desc("Options");
     desc.add_options()
         (

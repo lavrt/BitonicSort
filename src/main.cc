@@ -15,7 +15,7 @@ using Elem = int;
 
 namespace App = bitonic_sort::app;
 
-int main(int argc, char** argv) {
+int main(int argc, const char** argv) {
     try {
         auto [program, cfg] = App::ParseCli(argc, argv);
         if (program.mode == App::CliMode::kExit) {

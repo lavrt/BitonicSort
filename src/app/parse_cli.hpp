@@ -9,6 +9,6 @@
 namespace bitonic_sort::app {
 
 infra::opencl::DeviceKind ParseDeviceKind(const std::string& dev);
-std::pair<CliResult, std::optional<SorterConfig>> ParseCli(int argc, char** argv);
+std::pair<CliResult, std::optional<SorterConfig>> ParseCli(int argc, const char** argv);
 
 } // namespace bitonic_sort::app
