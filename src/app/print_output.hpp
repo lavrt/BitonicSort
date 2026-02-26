@@ -1,15 +1,18 @@
 #pragma once 
 
 #include <ostream>
+#include <ranges>
 #include <vector>
 
 namespace bitonic_sort::app {
 
 template <typename T>
 void PrintVector(std::ostream& out, const std::vector<T>& vec) {
-    for (size_t i = 0; i != vec.size(); ++i) {
-        out << vec[i] << (i + 1 == vec.size() ? "\n" : " ");
+    if (vec.empty()) {
+        return;
     }
+    std::ranges::copy(vec.begin(), std::prev(vec.end()), std::ostream_iterator<T>(out, " "));
+    out << vec.back() << "\n";
 }
 
 } // namespace bitonic_sort::app
