@@ -60,6 +60,9 @@ BitonicSort is a small modular C++ application with a layered architecture and c
 The project uses Conan for dependency management and CMake presets for configuration.
 
 ```bash
+git clone https://github.com/lavrt/BitonicSort
+cd BitonicSort
+
 conan install . -of build -s build_type=Release --build=missing
 cmake --preset conan-release
 cmake --build --preset conan-release -j
