@@ -24,7 +24,7 @@ int main(int argc, const char** argv) {
         }
 
         auto sorter = app::MakeSorter<Elem>(cfg.value());
-        std::vector<Elem> data = app::ReadInput<Elem>(std::cin);
+        auto data = app::ReadInput<Elem>(std::cin);
 
         const auto& opt = std::visit([](const auto& c) {
             return c.opt;
