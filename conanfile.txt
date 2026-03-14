@@ -1,0 +1,7 @@
+[requires]
+boost/1.90.0
+opencl-icd-loader/2023.12.14
+
+[generators]
+CMakeDeps
+CMakeToolchain
