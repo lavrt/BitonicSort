@@ -39,16 +39,16 @@ BitonicSort is a small modular C++ application with a layered architecture and c
     │   ├── parse_input.hpp
     │   ├── print_output.hpp
     │   ├── sorter_configs.hpp
-    │   ├── sorter_factory.hpp
+    │   └── sorter_factory.hpp
     ├── domain/
     │   ├── sorter.hpp
-    │   ├── sort_options.hpp
+    │   └── sort_options.hpp
     └── infra/
         ├── cpu/
         │   └── std_sorter.hpp
         └── opencl/
-            ├── kernels
-                └── bitonic.cl
+            ├── kernels/
+            |   └── bitonic.cl
             ├── bitonic_sorter.hpp
             ├── opencl_runtime.hpp
             ├── opencl_config.hpp
@@ -56,6 +56,8 @@ BitonicSort is a small modular C++ application with a layered architecture and c
 ```
 
 ## Build
+
+The project uses Conan for dependency management and CMake presets for configuration.
 
 ```bash
 conan install . -of build -s build_type=Release --build=missing
@@ -67,37 +69,40 @@ cmake --build --preset conan-release -j
 
 The program reads the number of elements followed by the sequence itself from standard input.
 
-Example input:
+#### Example input
 
 ```text
 5
-9 1 7 3 2
+9 -1 7 3 2
 ```
 
-Example run with the CPU backend:
+#### Example run with the CPU backend
 
 ```bash
 echo "5 9 -1 7 3 2" | ./build/sort --backend cpu
 ```
 
-Example run with the OpenCL backend and choosing device:
+#### Example run with the OpenCL backend and explicit device selection
 
 ```bash
 echo "5 9 -1 7 3 2" | ./build/sort --backend opencl --device prefer-gpu
 ```
 
-You can view all the options by running the program with the `--help` (or `-h`) option:
-
+#### Example output
+For the input `5 9 -1 7 3 2` the program prints:
 ```bash
-./build/sort --help
+-1 2 3 7 9
 ```
 
 ## CLI Options
 
-Typical options include:
-- `--help` - print usage information
-- `--desc` - sort in descending order
-- `--backend cpu|opencl` - select the sorting backend
-- `--device cpu|gpu|prefer-cpu|prefer-gpu` - OpenCL device selection
-- `--kernel` - path to OpenCL kernel source
+Supported options:
+- `--help`, `-h` — print usage information
+- `--desc` — sort in descending order
+- `--backend cpu|opencl` — select the sorting backend
+- `--device cpu|gpu|prefer-cpu|prefer-gpu` — select the OpenCL device
+- `--kernel <path>` — specify the path to the OpenCL kernel source
 
+## Current Limitations
+
+The current OpenCL backend is a straightforward baseline implementation of bitonic sort, chosen for clarity and correctness. Future iterations of the project will focus on performance improvements and more optimized kernel design.
