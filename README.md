@@ -29,7 +29,6 @@ BitonicSort is a small modular C++ application with a layered architecture and c
 ├── CMakeLists.txt
 ├── conanfile.txt
 ├── README.md
-├── bitonic.cl
 └── src/
     ├── main.cc
     ├── app/
